@@ -6,11 +6,9 @@
 
     socket.on('sun_count', function (sunCount) {
       document.getElementById('sunCounter').innerHTML = sunCount;
-      console.log(sunCount);
     });
     socket.on('rain_count', function (rainCount) {
       document.getElementById('rainCounter').innerHTML = rainCount;
-      console.log(rainCount);
     });
   }
 })();
