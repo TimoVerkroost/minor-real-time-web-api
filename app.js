@@ -7,7 +7,7 @@ var bodyParser = require('body-parser');
 var compression = require('compression');
 var sockIO = require('socket.io')();
 var Twit = require('twit');
-var counrtyData = require('./countries.json');
+
 require('dotenv').config();
 
 var twitter = new Twit({
@@ -26,23 +26,20 @@ app.use(compression());
 // Init socket.io
 app.sockIO = sockIO;
 
-// var sanFrancisco = [ '-122.75','36.8','-121.75','37.8' ];
-// var locations = {
-//   SanFrancisco : ['-122.75','36.8','-121.75','37.8'],
-//   NewYork : ['-74','40','-73','41']
-// };
-
-var globe = ['-180','-90','180','90'];
+/* Source of country data: http://data.okfn.org/data/core/country-list#resource-data */
+var counrtyData = require('./countries.json');
+// Country names list
 var counries = Object.keys(counrtyData).map(function (key) {
   return counrtyData[key].Name;
 });
 //console.log(counries);
-
+// Country codes list
 var counrty_codes = Object.keys(counrtyData).map(function (key) {
   return counrtyData[key].Code;
 });
 //console.log(counrty_codes);
 
+var globe = ['-180','-90','180','90'];
 var stream = twitter.stream('statuses/filter', { locations: globe });
 stream.on('tweet', function (tweet) {
   if (tweet.place) {
