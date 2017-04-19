@@ -9,14 +9,7 @@ var sockIO = require('socket.io')();
 var Twit = require('twit');
 require('dotenv').config();
 
-var twitterSun = new Twit({
-  consumer_key: process.env.TWITTER_CONSUMER_KEY,
-  consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
-  access_token: process.env.TWITTER_ACCESS_TOKEN,
-  access_token_secret: process.env.TWITTER_TOKEN_SECRET
-});
-
-var twitterRain = new Twit({
+var twitter = new Twit({
   consumer_key: process.env.TWITTER_CONSUMER_KEY,
   consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
   access_token: process.env.TWITTER_ACCESS_TOKEN,
@@ -32,18 +25,24 @@ app.use(compression());
 // Init socket.io
 app.sockIO = sockIO;
 
-var streamSun = twitterSun.stream('statuses/filter', { track: 'Sun' });
-var countSun = 0;
-streamSun.on('tweet', function () {
-  countSun++;
-  sockIO.emit('sun_count', countSun);
-});
-
-var streamRain = twitterRain.stream('statuses/filter', { track: 'Rain' });
+var stream = twitter.stream('statuses/filter', { track: ['rain', 'sun'] });
 var countRain = 0;
-streamRain.on('tweet', function () {
-  countRain++;
-  sockIO.emit('rain_count', countRain);
+var countSun = 0;
+stream.on('tweet', function (tweet) {
+  var tweetContent = tweet['text'].toLowerCase();
+  var tweetContentRain = tweetContent.includes('rain');
+  var tweetContentSun = tweetContent.includes('sun');
+  if (tweetContentRain === true) {
+    //console.log('rain');
+    countRain++;
+    sockIO.emit('rain_count', countRain);
+  }
+
+  if (tweetContentSun === true) {
+    //console.log('sun');
+    countSun++;
+    sockIO.emit('sun_count', countSun);
+  }
 });
 
 sockIO.on('connection', function (socket) {
