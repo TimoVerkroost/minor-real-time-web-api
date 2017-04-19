@@ -1,0 +1,60 @@
+{
+  "name": "minor-real-time-web-api",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Realtime api",
+  "main": "app.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TimoVerkroost/minor-real-time-web-api.git"
+  },
+  "author": "Timo Verkroost <timo.verkroost@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/TimoVerkroost/minor-real-time-web-api/issues"
+  },
+  "homepage": "https://github.com/TimoVerkroost/minor-real-time-web-api#readme",
+  "scripts": {
+    "start": "node ./bin/www",
+    "start-update": "nodemon ./bin/www --ignore 'public/javascripts/main.min.js' --ignore 'public/javascripts/bundle.js' --ignore 'public/stylesheets/main.min.css'",
+    "expose": "ngrok http 3000",
+    "build-bundle": "browserify public/javascripts/main.js > public/javascripts/bundle.js",
+    "build-mangle": "esmangle public/javascripts/bundle.js > public/javascripts/main.min.js",
+    "build-js": "npm run build-bundle && npm run build-mangle",
+    "build-css": "uglifycss public/stylesheets/main.css > public/stylesheets/main.min.css",
+    "build": "npm run build-js && npm run build-css",
+    "watch": "npm-watch",
+    "lint-css": "stylelint public/stylesheets/main.css || true",
+    "lint-js": "xo public/javascripts/main.js --env=browser || true"
+  },
+  "dependencies": {
+    "body-parser": "~1.16.0",
+    "compression": "^1.6.2",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.0",
+    "dotenv": "^4.0.0",
+    "express": "~4.14.1",
+    "hbs": "~4.0.1",
+    "morgan": "~1.7.0",
+    "request": "^2.81.0",
+    "serve-favicon": "~2.3.2"
+  },
+  "devDependencies": {
+    "browserify": "^14.1.0",
+    "esmangle": "^1.0.1",
+    "ngrok": "^2.2.6",
+    "nodemon": "^1.11.0",
+    "npm-watch": "^0.1.8",
+    "stylelint": "^7.7.1",
+    "stylelint-config-standard": "^16.0.0",
+    "uglifycss": "0.0.25",
+    "xo": "^0.18.0"
+  },
+  "stylelint": {
+    "extends": "stylelint-config-standard"
+  },
+  "xo": {
+    "space": true,
+    "esnext": false
+  }
+}
