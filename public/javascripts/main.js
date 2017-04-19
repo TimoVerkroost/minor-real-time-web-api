@@ -4,11 +4,11 @@
   if (document.getElementById('socketScript')) {
     var socket = io();
 
-    socket.on('sun_count', function (sunCount) {
-      document.getElementById('sunCounter').innerHTML = sunCount;
+    socket.on('country_list', function (list) {
+      document.getElementById('countryList').innerHTML = list;
     });
-    socket.on('rain_count', function (rainCount) {
-      document.getElementById('rainCounter').innerHTML = rainCount;
+    socket.on('country_code_list', function (list) {
+      document.getElementById('countryCodeList').innerHTML = list;
     });
   }
 })();

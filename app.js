@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 var compression = require('compression');
 var sockIO = require('socket.io')();
 var Twit = require('twit');
+var counrtyData = require('./countries.json');
 require('dotenv').config();
 
 var twitter = new Twit({
@@ -25,30 +26,54 @@ app.use(compression());
 // Init socket.io
 app.sockIO = sockIO;
 
-var stream = twitter.stream('statuses/filter', { track: ['rain', 'sun'] });
-var countRain = 0;
-var countSun = 0;
-stream.on('tweet', function (tweet) {
-  var tweetContent = tweet['text'].toLowerCase();
-  var tweetContentRain = tweetContent.includes('rain');
-  var tweetContentSun = tweetContent.includes('sun');
-  if (tweetContentRain === true) {
-    //console.log('rain');
-    countRain++;
-    sockIO.emit('rain_count', countRain);
-  }
+// var sanFrancisco = [ '-122.75','36.8','-121.75','37.8' ];
+// var locations = {
+//   SanFrancisco : ['-122.75','36.8','-121.75','37.8'],
+//   NewYork : ['-74','40','-73','41']
+// };
 
-  if (tweetContentSun === true) {
-    //console.log('sun');
-    countSun++;
-    sockIO.emit('sun_count', countSun);
+var globe = ['-180','-90','180','90'];
+var counries = Object.keys(counrtyData).map(function (key) {
+  return counrtyData[key].Name;
+});
+//console.log(counries);
+
+var counrty_codes = Object.keys(counrtyData).map(function (key) {
+  return counrtyData[key].Code;
+});
+//console.log(counrty_codes);
+
+var stream = twitter.stream('statuses/filter', { locations: globe });
+stream.on('tweet', function (tweet) {
+  if (tweet.place) {
+    // var country = tweet.place['country'];
+    // if (country) {
+    //   if(counries.indexOf(country) === -1){
+    //     counries.push(country);
+    //   } else {
+    //     sockIO.emit('country_list', counries);
+    //   }
+    // } else {
+    //   console.log('no country');
+    // }
+    // var countryCode = tweet.place['country_code'];
+    // if (countryCode) {
+    //   if(counrty_codes.indexOf(countryCode) === -1){
+    //     counrty_codes.push(countryCode);
+    //   } else {
+    //     sockIO.emit('country_code_list', counrty_codes);
+    //     console.log(counrty_codes);
+    //   }
+    // } else {
+    //   console.log('no counrty code');
+    // }
   }
 });
 
 sockIO.on('connection', function (socket) {
-  console.log('user enter ' + countSun + " < SUN ----- RAIN > " + countRain);
-  sockIO.emit('sun_count', countSun);
-  sockIO.emit('rain_count', countRain);
+  console.log('user enter');
+  sockIO.emit('country_list', counries);
+  sockIO.emit('country_code_list', counrty_codes);
   socket.on('disconnect', function(){
     console.log('user exit');
   });

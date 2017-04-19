@@ -10,3 +10,13 @@ body {
   text-align: center;
   font-size: 3em;
 }
+
+#countryList {
+  font-size: 1em;
+  text-align: left;
+  padding:2em;
+}
+
+#countryCodeList {
+  max-width: 100%;
+}
