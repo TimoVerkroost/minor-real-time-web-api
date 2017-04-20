@@ -43,6 +43,7 @@ var globe = ['-180','-90','180','90'];
 var stream = twitter.stream('statuses/filter', { locations: globe });
 stream.on('tweet', function (tweet) {
   if (tweet.place) {
+    //console.log(tweet.place['country']);
     // var country = tweet.place['country'];
     // if (country) {
     //   if(counries.indexOf(country) === -1){
