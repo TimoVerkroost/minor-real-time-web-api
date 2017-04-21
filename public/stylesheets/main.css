@@ -29,7 +29,6 @@ h2 {
   margin: 0.5%;
   background-color: #FFFFFF;
   color: #14171a;
-  transition: background-color 0.1s ease-out;
   position: relative;
   font-weight: 700;
 }
@@ -51,8 +50,8 @@ h2 {
 }
 
 #countryTweetCounter > .country.update {
-  transition: background-color 0.3s ease-in-out;
-  background-color: rgba(255, 255, 255, 0.7);
+  animation-name: bgColor;
+  animation-duration: 0.5s;
 }
 
 @media screen and (max-width: 900px) {
@@ -64,5 +63,19 @@ h2 {
 @media screen and (max-width: 700px) {
   #countryTweetCounter > .country {
     flex-basis: 99%;
+  }
+}
+
+@keyframes bgColor {
+  from {
+    background-color: rgba(255, 255, 255, 1);
+  }
+
+  50% {
+    background-color: rgba(255, 255, 255, 0.7);
+  }
+
+  to {
+    background-color: rgba(255, 255, 255, 1);
   }
 }
