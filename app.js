@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 var compression = require('compression');
 var sockIO = require('socket.io')();
 var Twit = require('twit');
+
 require('dotenv').config();
 
 var twitter = new Twit({
@@ -25,30 +26,49 @@ app.use(compression());
 // Init socket.io
 app.sockIO = sockIO;
 
-var stream = twitter.stream('statuses/filter', { track: ['rain', 'sun'] });
-var countRain = 0;
-var countSun = 0;
-stream.on('tweet', function (tweet) {
-  var tweetContent = tweet['text'].toLowerCase();
-  var tweetContentRain = tweetContent.includes('rain');
-  var tweetContentSun = tweetContent.includes('sun');
-  if (tweetContentRain === true) {
-    //console.log('rain');
-    countRain++;
-    sockIO.emit('rain_count', countRain);
-  }
+/* Source of country data: http://data.okfn.org/data/core/country-list#resource-data */
+var counrtyData = require('./countries.json');
 
-  if (tweetContentSun === true) {
-    //console.log('sun');
-    countSun++;
-    sockIO.emit('sun_count', countSun);
+var countObject = Object.keys(counrtyData).map(function (key) {
+  return {
+    name: counrtyData[key].Name,
+    code: counrtyData[key].Code,
+    count: 0
+  };
+});
+
+var totalCount = 0;
+
+var globe = ['-180','-90','180','90'];
+var stream = twitter.stream('statuses/filter', { locations: globe });
+stream.on('tweet', function (tweet) {
+  if (tweet.place) {
+    var countryCode = tweet.place['country_code'];
+    if (countryCode) {
+      for (var i = 0; i < countObject.length; i++) {
+        if (countObject[i].code === countryCode){
+          countObject[i].count++;
+          totalCount++;
+          // Update webpage
+          sockIO.emit('country_code_list_count', countObject, totalCount);
+        }
+      }
+    } else {
+      console.log('no counrty code');
+    }
   }
 });
 
+// Update every 5000 milliseconds the page
+// setInterval(function() {
+//   sockIO.emit('country_code_list_count', countObject);
+// }, 5000);
+
 sockIO.on('connection', function (socket) {
-  console.log('user enter ' + countSun + " < SUN ----- RAIN > " + countRain);
-  sockIO.emit('sun_count', countSun);
-  sockIO.emit('rain_count', countRain);
+
+  console.log('user enter');
+  //sockIO.emit('country_list', counries);
+  sockIO.emit('country_code_list', countObject, totalCount);
   socket.on('disconnect', function(){
     console.log('user exit');
   });
