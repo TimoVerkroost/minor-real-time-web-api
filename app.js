@@ -28,50 +28,47 @@ app.sockIO = sockIO;
 
 /* Source of country data: http://data.okfn.org/data/core/country-list#resource-data */
 var counrtyData = require('./countries.json');
-// Country names list
-var counries = Object.keys(counrtyData).map(function (key) {
-  return counrtyData[key].Name;
+
+var countObject = Object.keys(counrtyData).map(function (key) {
+  return {
+    name: counrtyData[key].Name,
+    code: counrtyData[key].Code,
+    count: 0
+  };
 });
-//console.log(counries);
-// Country codes list
-var counrty_codes = Object.keys(counrtyData).map(function (key) {
-  return counrtyData[key].Code;
-});
-//console.log(counrty_codes);
+
+var totalCount = 0;
 
 var globe = ['-180','-90','180','90'];
 var stream = twitter.stream('statuses/filter', { locations: globe });
 stream.on('tweet', function (tweet) {
   if (tweet.place) {
-    //console.log(tweet.place['country']);
-    // var country = tweet.place['country'];
-    // if (country) {
-    //   if(counries.indexOf(country) === -1){
-    //     counries.push(country);
-    //   } else {
-    //     sockIO.emit('country_list', counries);
-    //   }
-    // } else {
-    //   console.log('no country');
-    // }
-    // var countryCode = tweet.place['country_code'];
-    // if (countryCode) {
-    //   if(counrty_codes.indexOf(countryCode) === -1){
-    //     counrty_codes.push(countryCode);
-    //   } else {
-    //     sockIO.emit('country_code_list', counrty_codes);
-    //     console.log(counrty_codes);
-    //   }
-    // } else {
-    //   console.log('no counrty code');
-    // }
+    var countryCode = tweet.place['country_code'];
+    if (countryCode) {
+      for (var i = 0; i < countObject.length; i++) {
+        if (countObject[i].code === countryCode){
+          countObject[i].count++;
+          totalCount++;
+          // Update webpage
+          sockIO.emit('country_code_list_count', countObject, totalCount);
+        }
+      }
+    } else {
+      console.log('no counrty code');
+    }
   }
 });
 
+// Update every 5000 milliseconds the page
+// setInterval(function() {
+//   sockIO.emit('country_code_list_count', countObject);
+// }, 5000);
+
 sockIO.on('connection', function (socket) {
+
   console.log('user enter');
-  sockIO.emit('country_list', counries);
-  sockIO.emit('country_code_list', counrty_codes);
+  //sockIO.emit('country_list', counries);
+  sockIO.emit('country_code_list', countObject, totalCount);
   socket.on('disconnect', function(){
     console.log('user exit');
   });

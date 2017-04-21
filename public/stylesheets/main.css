@@ -1,22 +1,68 @@
 body {
-  padding: 0;
+  padding: 1em;
   margin: 0;
+  font-family: Verdana, Geneva, sans-serif;
+  background-color: #1da1f2;
+  color: #FFFFFF;
 }
 
-.counter {
-  display: inline-block;
-  padding: 10%;
-  width: 30%;
+h1,
+h2 {
   text-align: center;
-  font-size: 3em;
 }
 
-#countryList {
-  font-size: 1em;
-  text-align: left;
-  padding:2em;
+#totalCounts {
+  display: block;
+  font-size: 0.8em;
 }
 
-#countryCodeList {
-  max-width: 100%;
+#countryTweetCounter {
+  display: flex;
+  flex: 0 1 auto;
+  flex-flow: row wrap;
+}
+
+#countryTweetCounter > .country {
+  display: none;
+  flex-basis: 32%;
+  box-sizing: border-box;
+  margin: 0.5%;
+  background-color: #FFFFFF;
+  color: #14171a;
+  transition: background-color 0.1s ease-out;
+  position: relative;
+  font-weight: 700;
+}
+
+#countryTweetCounter > .country > span {
+  padding: 1em 4em 1em 1em;
+  display: inline-block;
+}
+
+#countryTweetCounter > .country > span.counterCode {
+  position: absolute;
+  font-weight: 400;
+  top:0;
+  bottom: 0;
+  right:0;
+  background-color: #2ecc71;
+  color: #ffffff;
+  padding: 1em;
+}
+
+#countryTweetCounter > .country.update {
+  transition: background-color 0.3s ease-in-out;
+  background-color: rgba(255, 255, 255, 0.7);
+}
+
+@media screen and (max-width: 900px) {
+  #countryTweetCounter > .country {
+    flex-basis: 49%;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  #countryTweetCounter > .country {
+    flex-basis: 99%;
+  }
 }
