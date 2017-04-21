@@ -8,7 +8,7 @@ var yyyy = startServer.getFullYear();
 var hours = startServer.getUTCHours();
 var minutes = startServer.getMinutes();
 
-startServer = mm + '/' + dd + '/' + yyyy + ' - ' + ("0" + hours).slice(-2) + ':' + ("0" + minutes).slice(-2);
+startServer = mm + '/' + dd + '/' + yyyy + ' - ' + hours + ':' + minutes;
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
