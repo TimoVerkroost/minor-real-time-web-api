@@ -1,12 +1,12 @@
 (function () {
   /* global io */
+  // Get country container
+  var countryContainer = document.getElementById('countryTweetCounter');
+  // Get hash container
+  var hashtagList = document.getElementById('hashtagList');
   // Check if socket is available
   if (document.getElementById('socketScript')) {
     var socket = io();
-    // Get country countainer
-    var countryContainer = document.getElementById('countryTweetCounter');
-    var topHashtags = document.getElementById('topHashtags');
-    var hashtagList = document.getElementById('hashtagList');
     // Generate country list, this will only be emited when the user is connecting
     // Check if country container exist
     if (countryContainer) {
@@ -16,7 +16,7 @@
         // Make for each country a list item
         for (var i = 0; i < list.length; i++) {
           // Make list item for single country
-          countryContainer.innerHTML += '<a href="#select-'+ list[i].code + '" id="' + list[i].code + '" class="country"><span>' + list[i].name + '</span> <span class="counterCode">' + list[i].count + '</span></a>';
+          countryContainer.innerHTML += '<a href="#select-' + list[i].code + '" id="' + list[i].code + '" class="country"><span>' + list[i].name + '</span> <span class="counterCode">' + list[i].count + '</span></a>';
           if (list[i].count !== 0) {
             // If country count is higher then 0 show them otherwise it's hidden
             document.getElementById(list[i].code).style.display = 'block';
@@ -54,32 +54,31 @@
       }
     });
     // Update country top 5 hashtags when click on country
-    countryContainer.addEventListener('click', function(event) {
-      topHashCounter(event.target.id);
+    countryContainer.addEventListener('click', function (event) {
+      topHashCounter(socket, event.target.id);
     });
     // Update counter based on the Hash that is generated from the country code, update after every 500ms
-    setInterval(function(){
+    setInterval(function () {
       var gethashID = window.location.hash.substr(8);
       if (gethashID) {
-        topHashCounter(gethashID);
+        topHashCounter(socket, gethashID);
       }
     }, 500);
-    // Hash counter for top 5 hashtags blockID = the id of the country block
-    function topHashCounter (blockID) {
-      // Request for top hashtags of country
-      socket.emit('get_top_hashtags', socket.id, blockID);
-      // Response from server for top hashtags of the selected country
-      socket.on('response_top_hashtags', function (countryName, topHashtags) {
-        // Fill in the selected country name
-        document.getElementById('topHashTitle').innerHTML = countryName;
-        // Empty container
-        hashtagList.innerHTML = '';
-        // Make list item for each hashtag [0] = hashtag name, [1] = total counts of the hashtag
-        for (var i = 0; i < topHashtags.length; i++) {
-          hashtagList.innerHTML += '<li id="' + topHashtags[i][0] + '" class="tag"><span>#' + topHashtags[i][0] + '</span> <span class="counterTag">' + topHashtags[i][1] + '</span></li>';
-        }
-      });
-    }
   }
-
+  // Hash counter for top 5 hashtags blockID = the id of the country block
+  function topHashCounter(socket, blockID) {
+    // Request for top hashtags of country
+    socket.emit('get_top_hashtags', socket.id, blockID);
+    // Response from server for top hashtags of the selected country
+    socket.on('response_top_hashtags', function (countryName, topHashtags) {
+      // Fill in the selected country name
+      document.getElementById('topHashTitle').innerHTML = countryName;
+      // Empty container
+      hashtagList.innerHTML = '';
+      // Make list item for each hashtag [0] = hashtag name, [1] = total counts of the hashtag
+      for (var i = 0; i < topHashtags.length; i++) {
+        hashtagList.innerHTML += '<li id="' + topHashtags[i][0] + '" class="tag"><span>#' + topHashtags[i][0] + '</span> <span class="counterTag">' + topHashtags[i][1] + '</span></li>';
+      }
+    });
+  }
 })();
