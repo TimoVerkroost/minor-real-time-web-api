@@ -115,13 +115,14 @@ sockIO.on('connection', function (socket) {
         sortableTagCount.sort(function(a, b) {
           return b[1] - a[1];
         });
-        // Get top 5 hashtags, need to make this less ugly
-        var topTags = [ sortableTagCount[0],
-                        sortableTagCount[1],
-                        sortableTagCount[2],
-                        sortableTagCount[3],
-                        sortableTagCount[4]
-                      ];
+        // Get top 5 hashtags
+        var topTags = [];
+        for (var s = 0; s < sortableTagCount.length; s++) {
+          if (s < 5) {
+            // Push to topTags only the first 5
+            topTags.push(sortableTagCount[s]);
+          }
+        }
         // Get country name of selected country
         var countryNameTop = countObject[key].name;
       }

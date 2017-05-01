@@ -34,8 +34,11 @@
       // Check if country container exist
       if (countryContainer) {
         for (var i = 0; i < listCount.length; i++) {
+          // Get each counter of the countries
           var targetCounter = document.getElementById(listCount[i].code).getElementsByClassName('counterCode')[0];
+          // Check if counter exist
           if (Number(targetCounter.innerHTML) !== listCount[i].count) {
+            // Check if counter is 0 and if is 0 show it because it will be +1 after this loop
             if (Number(targetCounter.innerHTML) === 0) {
               // If targetCounter count is 0 and after this code it isn't so it needs to be displayed
               document.getElementById(listCount[i].code).style.display = 'block';
@@ -50,9 +53,21 @@
         }
       }
     });
+    // Update country top 5 hashtags when click on country
     countryContainer.addEventListener('click', function(event) {
+      topHashCounter(event.target.id);
+    });
+    // Update counter based on the Hash that is generated from the country code, update after every 500ms
+    setInterval(function(){
+      var gethashID = window.location.hash.substr(8);
+      if (gethashID) {
+          topHashCounter(gethashID);
+      }
+    }, 500);
+    // Hash counter for top 5 hashtags blockID = the id of the country block
+    function topHashCounter (blockID) {
       // Request for top hashtags of country
-      socket.emit('get_top_hashtags', socket.id, event.target.id);
+      socket.emit('get_top_hashtags', socket.id, blockID);
       // Response from server for top hashtags of the selected country
       socket.on('response_top_hashtags', function (countryName, topHashtags) {
         // Fill in the selected country name
@@ -64,7 +79,7 @@
           hashtagList.innerHTML += '<li id="' + topHashtags[i][0] + '" class="tag"><span>#' + topHashtags[i][0] + '</span> <span class="counterTag">' + topHashtags[i][1] + '</span></li>';
         }
       });
-    });
+    }
   }
 
 })();
