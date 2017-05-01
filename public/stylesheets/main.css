@@ -4,22 +4,38 @@ body {
   font-family: Verdana, Geneva, sans-serif;
   background-color: #1da1f2;
   color: #FFFFFF;
+  display: flex;
+  flex: 0 1 auto;
+  flex-flow: row wrap;
 }
 
 h1,
 h2 {
   text-align: center;
+  flex-basis: 100%;
 }
 
 #totalCounts {
   display: block;
   font-size: 0.8em;
+  flex-basis: 100%;
+}
+
+#filterSelection {
+  display: flex;
+  flex: 0 1 auto;
+  flex-flow: row wrap;
+  width: 33%;
+  padding: 1em;
+  box-sizing: border-box;
+  background-color: #333;
 }
 
 #countryTweetCounter {
   display: flex;
   flex: 0 1 auto;
   flex-flow: row wrap;
+  width: 66%;
 }
 
 #countryTweetCounter > .country {
@@ -31,6 +47,15 @@ h2 {
   color: #14171a;
   position: relative;
   font-weight: 700;
+}
+
+#countryTweetCounter > .country::before {
+  content: "";
+  position: absolute;
+  top:0;
+  left:0;
+  width: 100%;
+  height: 100%;
 }
 
 #countryTweetCounter > .country > span {
