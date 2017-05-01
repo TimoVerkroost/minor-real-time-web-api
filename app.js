@@ -26,12 +26,12 @@ app.use(compression());
 app.sockIO = sockIO;
 
 /* Source of country data: http://data.okfn.org/data/core/country-list#resource-data */
-var counrtyData = require('./countries.json');
+var countryData = require('./countries.json');
 
-var countObject = Object.keys(counrtyData).map(function (key) {
+var countObject = Object.keys(countryData).map(function (key) {
   return {
-    name: counrtyData[key].Name,
-    code: counrtyData[key].Code,
+    name: countryData[key].Name,
+    code: countryData[key].Code,
     count: 0
   };
 });
@@ -53,7 +53,7 @@ stream.on('tweet', function (tweet) {
         }
       }
     } else {
-      console.log('no counrty code');
+      console.log('no country code');
     }
   }
 });
