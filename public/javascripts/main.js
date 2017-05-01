@@ -61,7 +61,7 @@
     setInterval(function(){
       var gethashID = window.location.hash.substr(8);
       if (gethashID) {
-          topHashCounter(gethashID);
+        topHashCounter(gethashID);
       }
     }, 500);
     // Hash counter for top 5 hashtags blockID = the id of the country block
