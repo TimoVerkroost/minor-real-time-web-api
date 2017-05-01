@@ -4,15 +4,10 @@
   "private": true,
   "description": "Realtime api",
   "main": "app.js",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/TimoVerkroost/minor-real-time-web-api.git"
-  },
+  "repository": "https://github.com/TimoVerkroost/minor-real-time-web-api.git",
   "author": "Timo Verkroost <timo.verkroost@gmail.com>",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/TimoVerkroost/minor-real-time-web-api/issues"
-  },
+  "bugs": "https://github.com/TimoVerkroost/minor-real-time-web-api/issues",
   "homepage": "https://github.com/TimoVerkroost/minor-real-time-web-api#readme",
   "scripts": {
     "start": "node ./bin/www",
