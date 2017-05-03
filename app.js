@@ -51,6 +51,20 @@ var totalCount = 0;
 var globe = ['-180','-90','180','90'];
 // Start Twitter streaming API
 var stream = twitter.stream('statuses/filter', { locations: globe });
+
+// Handle connection error Twitter streaming API and emit to client
+stream.on('error', function (errMsg) {
+  sockIO.emit('error_handle', errMsg);
+});
+// Check if connected to streaming API
+stream.on('connected', function () {
+  //console.log('Connected to streaming API Twitter');
+});
+// Handle disconnect Twitter streaming API and emit to client
+stream.on('disconnect', function (disconnect) {
+  sockIO.emit('error_handle', disconnect);
+});
+// Check when a Tweet is placed on Twitter
 stream.on('tweet', function (tweet) {
   // Check of the location of the Tweet is given.
   if (tweet.place) {
@@ -59,7 +73,7 @@ stream.on('tweet', function (tweet) {
     // Check if countryCode exist in the Tweet data to prevent errors.
     if (countryCode) {
       for (var i = 0; i < countObject.length; i++) {
-        if (countObject[i].code === countryCode){
+        if (countObject[i].code === countryCode) {
           // Count single country
           countObject[i].count++;
           // Count all tweets
@@ -87,11 +101,9 @@ stream.on('tweet', function (tweet) {
       }
     } else {
       // No country code in Tweet data
-      //console.log('no country code');
     }
   } else {
     // No place is added to Tweet data
-    //console.log('no place');
   }
 });
 

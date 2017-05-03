@@ -51,6 +51,11 @@
         }
       }
     });
+    socket.on('error_handle', function () {
+      document.getElementById('error').style.display = 'block';
+      countryContainer.style.display = 'none';
+      document.getElementById('filterSelection').style.display = 'none';
+    });
     // Update country top 5 hashtags when click on country
     countryContainer.addEventListener('click', function (event) {
       topHashCounter(socket, event.target.id);
@@ -75,10 +80,9 @@
       //hashtagList.innerHTML = '';
       // Make list item for each hashtag [0] = hashtag name, [1] = total counts of the hashtag
       var getTagElements = document.getElementsByClassName("tag");
-      //console.log(getTagElements[0]);
-      for (var i = 0; i < getTagElements.length; i++) {
-        //console.log(topHashtags);
-        if (topHashtags[i]) {
+      // Check if their are hashtags saved
+      if(topHashtags){
+        for (var i = 0; i < topHashtags.length; i++) {
           getTagElements[i].innerHTML = '<span>#' + topHashtags[i][0] + '</span> <span class="counterTag">' + topHashtags[i][1] + '</span>';
         }
       }
