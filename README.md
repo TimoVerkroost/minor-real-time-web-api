@@ -4,7 +4,7 @@ The app counts all Tweets in de world (from the time when server starts) and sor
 
 Tweet counter app: [Live demo](https://twitter-locations.herokuapp.com/)
 
-![Counter screenshot](https://github.com/TimoVerkroost/minor-real-time-web-api/blob/master/repo-images/screenshot_counter.png "Counter screenshot")
+![Counter screenshot](https://github.com/TimoVerkroost/minor-real-time-web-api/blob/master/repo-imaexplanationot_demo.png "Counter screenshot")
 
 ## Usedunuseds
 * [x] [`Socket.io`](https://www.npmjs.com/package/socket.io) for real-time updates.
@@ -23,6 +23,60 @@ Tweet counter app: [Live demo](https://twitter-locations.herokuapp.com/)
 * [x] Update top Tweets for each user specific.
 * [x] Count number of Tweets in custom JS object.
 * [x] Server counts the Tweets the client only asks what the server knows.
+
+## Tweet counting object
+To save how many Tweets are done in a country I used an object, this object constantly update it's self with a count and new tags or tag count.
+
+```javascript
+  /* Source of country data: http://data.okfn.org/data/core/country-list#resource-data */
+  var countryData = require('./countries.json');
+  
+  // Countries object with count number, based on loaded "countryData".
+  var countObject = Object.keys(countryData).map(function (key) {
+    return {
+      name: countryData[key].Name,
+      code: countryData[key].Code,
+      count: 0,
+      tags: {}
+    };
+  });
+  // Object explanation 
+  // name = Country name.
+  // code = Country code.
+  // count = Total tweets in this country.
+  // tags = All the tags that are used those will also be counted.
+  // Example
+  /* 
+    objectItem {
+      name: 'United States',
+      code: 'US',
+      count: 1337,
+      tags: {
+        jobs: 36,
+        hiring: 21
+      }
+    }
+  */
+```
+
+### Tag counter
+Before we push the hashtag to the "countObject" we need to check some things first thats what this code does.
+```javascript
+  if (tweetHashtags.length >= 1) {
+    for (var h = 0; h < tweetHashtags.length; h++) {
+      // Get hashtag text and convert to lowercase and remove ' + "
+      var getHashTag = tweetHashtags[h].text.toLowerCase().replace(/"/g, '').replace(/'/g, '');
+      // Check if hashtag exist in object
+      if (countObject[i].tags[getHashTag]) {
+        // Count total hashtag use
+        countObject[i].tags[getHashTag]++
+      } else {
+        // Start counting hashtag
+        countObject[i].tags[getHashTag] = 1;
+      }
+    }
+  }
+```
 
 ## Websocket events
 To give the user/client the most up to date information I make use of websockets. To handle the websocket events I used the [`Socket.io`](https://www.npmjs.com/package/socket.io) package.
