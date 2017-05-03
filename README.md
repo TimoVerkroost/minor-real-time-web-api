@@ -28,10 +28,13 @@ Tweet counter app: [Live demo](https://twitter-locations.herokuapp.com/)
 To give the user/client the most up to date information I make use of websockets. To handle the websocket events I used the [`Socket.io`](https://www.npmjs.com/package/socket.io) package.
 
 ### Update Tweets for each country
+#### Serverside
 ```javascript
   // Serverside emit when a Tweet is posted
   sockIO.emit('country_code_list_count', countObject, totalCount);
-  
+```
+#### Clientside
+```javascript
   // Clientside action when their is an emit
   socket.on('country_code_list_count', function (listCount, totalCount) {
       // Loop through the countries on the client side and update them
@@ -39,13 +42,16 @@ To give the user/client the most up to date information I make use of websockets
 ```
 
 ### First connection of the user
+#### Serverside
 ```javascript
   // Serverside emit that user is connected and the give the count data that exist.
   sockIO.on('connection', function (socket) {
     // Send data to user that is connecting
     sockIO.to(socket.id).emit('country_code_list', countObject);
   });
-  
+```
+#### Clientside
+```javascript
   // Clientside action when their is an emit
   socket.on('country_code_list', function (list) {
     // Loop through the countries on the client side to place the data
@@ -53,6 +59,7 @@ To give the user/client the most up to date information I make use of websockets
 ```
 
 ### Get top hashtags for a specific country by user request
+#### Serverside
 ```javascript
   // Serverside when request from user to get top hashtags for a country
   socket.on('get_top_hashtags', function (id, code) {
@@ -60,7 +67,9 @@ To give the user/client the most up to date information I make use of websockets
     // Send the top 5 hashtags to the user that asked for it
     sockIO.to(id).emit('response_top_hashtags', countryNameTop, topTags);
   });
-  
+```
+#### Clientside
+```javascript
   // Clientside asked for hashtags of country
   socket.emit('get_top_hashtags', socket.id, blockID);
   // Response from server for top hashtags of the selected country
@@ -70,6 +79,7 @@ To give the user/client the most up to date information I make use of websockets
 ```
 
 ### Error handle when Twitter streaming API fails
+#### Serverside
 ```javascript
   // Serverside emit only when an error appears
   // Handle connection error Twitter streaming API and emit to client
@@ -80,7 +90,9 @@ To give the user/client the most up to date information I make use of websockets
   stream.on('disconnect', function (disconnect) {
     sockIO.emit('error_handle', disconnect);
   });
-  
+```
+#### Clientside
+```javascript
   // Clientside show error and remove the counters
   socket.on('error_handle', function () {
     // Show error container and hide unused containers
