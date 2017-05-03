@@ -12,14 +12,12 @@
     if (countryContainer) {
       socket.on('country_code_list', function (list) {
         // Empty container
-        countryContainer.innerHTML = '';
         // Make for each country a list item
         for (var i = 0; i < list.length; i++) {
-          // Make list item for single country
-          countryContainer.innerHTML += '<a href="#select-' + list[i].code + '" id="' + list[i].code + '" class="country"><span>' + list[i].name + '</span> <span class="counterCode">' + list[i].count + '</span></a>';
+          // Update country when their is an update is available.
           if (list[i].count !== 0) {
             // If country count is higher then 0 show them otherwise it's hidden
-            document.getElementById(list[i].code).style.display = 'block';
+            document.getElementById(list[i].code).style.display = 'flex';
           }
           // Count number of total Tweets
           document.getElementById(list[i].code).style.order = '-' + list[i].count;
@@ -41,7 +39,7 @@
             // Check if counter is 0 and if is 0 show it because it will be +1 after this loop
             if (Number(targetCounter.innerHTML) === 0) {
               // If targetCounter count is 0 and after this code it isn't so it needs to be displayed
-              document.getElementById(listCount[i].code).style.display = 'block';
+              document.getElementById(listCount[i].code).style.display = 'flex';
             }
             // Update the counter for the selected country
             targetCounter.innerHTML = listCount[i].count;
@@ -74,10 +72,15 @@
       // Fill in the selected country name
       document.getElementById('topHashTitle').innerHTML = countryName;
       // Empty container
-      hashtagList.innerHTML = '';
+      //hashtagList.innerHTML = '';
       // Make list item for each hashtag [0] = hashtag name, [1] = total counts of the hashtag
-      for (var i = 0; i < topHashtags.length; i++) {
-        hashtagList.innerHTML += '<li id="' + topHashtags[i][0] + '" class="tag"><span>#' + topHashtags[i][0] + '</span> <span class="counterTag">' + topHashtags[i][1] + '</span></li>';
+      var getTagElements = document.getElementsByClassName("tag");
+      //console.log(getTagElements[0]);
+      for (var i = 0; i < getTagElements.length; i++) {
+        //console.log(topHashtags);
+        if (topHashtags[i]) {
+          getTagElements[i].innerHTML = '<span>#' + topHashtags[i][0] + '</span> <span class="counterTag">' + topHashtags[i][1] + '</span>';
+        }
       }
     });
   }

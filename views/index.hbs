@@ -1,12 +1,30 @@
-<h1>Number of Tweets per country since: {{startServer}} (UTC)</h1>
+<header>
+  <h1>Number of Tweets by country</h1>
 
-<h2>World tweets: <span id="totalCounts"></span></h2>
+  <h2>Tweets: <span id="totalCounts"></span></h2>
 
-<section id="countryTweetCounter"></section>
-
-<section id="filterSelection">
-  <section id="topHashtags">
-    <h2>Top hashtags for: <span id="topHashTitle"></span></h2>
-    <ol id="hashtagList"></ol>
+  <span class="serverStart"><strong>Start counting:</strong> {{startServer}} (UTC)</span>
+</header>
+<main>
+  <section id="countryTweetCounter">
+    <div class="inner">
+      {{#each countries}}
+        <a href="#select-{{code}}" id="{{code}}" class="country"><span>{{name}}</span> <span class="counterCode">{{count}}</span></a>
+      {{/each}}
+    </div>
   </section>
-</section>
+
+  <aside id="filterSelection">
+    <section id="topHashtags">
+      <h2>Top hashtags in:</h2>
+      <h4 id="topHashTitle"></h4>
+      <div id="hashtagList">
+        <div id="hash1" class="tag"></div>
+        <div id="hash2" class="tag"></div>
+        <div id="hash3" class="tag"></div>
+        <div id="hash4" class="tag"></div>
+        <div id="hash5" class="tag"></div>
+      </div>
+    </section>
+  </aside>
+</main>

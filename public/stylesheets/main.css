@@ -1,55 +1,153 @@
 body {
-  padding: 1em;
+  padding: 0;
   margin: 0;
   font-family: Verdana, Geneva, sans-serif;
-  background-color: #1da1f2;
+  /*background-color: #1da1f2;*/
+  background-color: #e2e5ea;
   color: #FFFFFF;
-  display: flex;
-  flex: 0 1 auto;
-  flex-flow: row wrap;
 }
 
 h1,
 h2 {
+  text-align: left;
+  line-height: 100%;
+  padding: 0;
+  margin: 0;
+  font-weight: 400;
+}
+
+header {
+  display: flex;
+  flex: 0 1 auto;
+  flex-flow: row wrap;
+  background-color: #FFFFFF;
+  color: #657786;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.05), 0 6px 20px 0 rgba(0, 0, 0, 0.05);
+  margin-bottom: 2em;
+  position: relative;
+  align-items: center;
+}
+
+main {
+  display: flex;
+  flex: 0 1 auto;
+  flex-flow: row wrap;
+  padding: 0 2em 2em;
+}
+
+header > h1 {
+  font-size: 1.4em;
+  padding: 1em;
+  flex-basis: 45%;
+  box-sizing: border-box;
+}
+
+header > h2 {
+  font-size: 1.2em;
+  margin: 0 auto;
+  padding: 1em;
+  background-color: #1da1f2;
+  color: #ffffff;
+  font-weight: normal;
+  flex-basis: 10%;
+  box-sizing: border-box;
   text-align: center;
-  flex-basis: 100%;
+}
+
+header > .serverStart {
+  padding: 1em;
+  flex-basis: 45%;
+  box-sizing: border-box;
+  font-size: 1em;
+  display: block;
+  text-align: right;
 }
 
 #totalCounts {
-  display: block;
   font-size: 0.8em;
-  flex-basis: 100%;
+  display: block;
+  text-align: center;
+  font-weight: 700;
+  margin-top: 0.5em;
 }
 
 #filterSelection {
+  width: 30%;
+  padding: 0 1em;
+  box-sizing: border-box;
+}
+
+#topHashtags {
   display: flex;
   flex: 0 1 auto;
   flex-flow: row wrap;
-  width: 33%;
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.05), 0 6px 20px 0 rgba(0, 0, 0, 0.05);
   padding: 1em;
   box-sizing: border-box;
-  background-color: #333;
+  color: #657786;
+}
+
+#topHashtags h2 {
+  flex-basis: 100%;
+  font-weight: 400;
+}
+
+#topHashtags > h4 {
+  flex-basis: 100%;
+  margin-top: 0.5em;
+}
+
+#hashtagList {
+  flex-basis: 100%;
+}
+
+#hashtagList .tag {
+  padding: 0.5em 3em 0.5em 0.5em;
+  border-bottom: 1px solid #657786;
+  position: relative;
+}
+
+#hashtagList .counterTag {
+  position: absolute;
+  top:0;
+  right:0;
+  bottom: 0;
+  padding: 0.5em;
 }
 
 #countryTweetCounter {
+  width: 70%;
+  padding: 0 1em;
+  box-sizing: border-box;
+}
+
+#countryTweetCounter .inner {
   display: flex;
   flex: 0 1 auto;
   flex-flow: row wrap;
-  width: 66%;
+  background-color: #ffffff;
+  padding: 1em;
+  box-sizing: border-box;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.05), 0 6px 20px 0 rgba(0, 0, 0, 0.05);
 }
 
-#countryTweetCounter > .country {
+#countryTweetCounter .country {
   display: none;
+  flex: 0 1 auto;
+  flex-flow: row wrap;
+  text-decoration: none;
   flex-basis: 32%;
   box-sizing: border-box;
   margin: 0.5%;
-  background-color: #FFFFFF;
-  color: #14171a;
+  background-color: #e8f5fd;
+  color: #657786;
   position: relative;
-  font-weight: 700;
+  font-weight: normal;
+  border: 1px solid #1da1f2;
 }
 
-#countryTweetCounter > .country::before {
+#countryTweetCounter .country::before {
   content: "";
   position: absolute;
   top:0;
@@ -58,49 +156,49 @@ h2 {
   height: 100%;
 }
 
-#countryTweetCounter > .country > span {
+#countryTweetCounter .country > span {
   padding: 1em 4em 1em 1em;
   display: inline-block;
 }
 
-#countryTweetCounter > .country > span.counterCode {
+#countryTweetCounter .country > span.counterCode {
   position: absolute;
   font-weight: 400;
   top:0;
   bottom: 0;
   right:0;
-  background-color: #2ecc71;
+  background-color: #1da1f2;
   color: #ffffff;
   padding: 1em;
 }
 
-#countryTweetCounter > .country.update {
+#countryTweetCounter .country.update {
   animation-name: bgColor;
   animation-duration: 0.5s;
 }
 
 @media screen and (max-width: 900px) {
-  #countryTweetCounter > .country {
+  #countryTweetCounter .country {
     flex-basis: 49%;
   }
 }
 
 @media screen and (max-width: 700px) {
-  #countryTweetCounter > .country {
+  #countryTweetCounter .country {
     flex-basis: 99%;
   }
 }
 
 @keyframes bgColor {
   from {
-    background-color: rgba(255, 255, 255, 1);
+    background-color: rgba(232, 245, 253, 1);
   }
 
   50% {
-    background-color: rgba(255, 255, 255, 0.7);
+    background-color: rgba(232, 245, 253, 0.4);
   }
 
   to {
-    background-color: rgba(255, 255, 255, 1);
+    background-color: rgba(232, 245, 253, 1);
   }
 }

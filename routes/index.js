@@ -14,7 +14,9 @@ startServer = ("0" + dd).slice(-2) + '/' + ("0" + mm).slice(-2) + '/' + yyyy + '
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
+  res.locals.countries = require('../app.js').countObject;
   res.render('index', { title: 'Tweet counter', startServer: startServer});
+  console.log(res);
 });
 
 module.exports = router;
