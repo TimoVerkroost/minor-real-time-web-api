@@ -4,7 +4,7 @@ The app counts all Tweets in de world (from the time when server starts) and sor
 
 Tweet counter app: [Live demo](https://twitter-locations.herokuapp.com/)
 
-![Counter screenshot](https://github.com/TimoVerkroost/minor-real-time-web-api/blob/master/repo-imaexplanationot_demo.png "Counter screenshot")
+![Counter screenshot](https://github.com/TimoVerkroost/minor-real-time-web-api/blob/master/repo-images/screenshot_demo.png "Counter screenshot")
 
 ## Usedunuseds
 * [x] [`Socket.io`](https://www.npmjs.com/package/socket.io) for real-time updates.
