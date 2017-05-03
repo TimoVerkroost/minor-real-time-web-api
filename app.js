@@ -109,8 +109,8 @@ stream.on('tweet', function (tweet) {
 
 // User connects to website
 sockIO.on('connection', function (socket) {
-  // Push the current state of countries data to the client side
-  sockIO.emit('country_code_list', countObject);
+  // Push the current state of countries data to the connecting client side
+  sockIO.to(socket.id).emit('country_code_list', countObject);
   // User request for top hashtags of a country
   socket.on('get_top_hashtags', function (id, code) {
     // loop through country object to find the country of choice

@@ -4,6 +4,10 @@
   var countryContainer = document.getElementById('countryTweetCounter');
   // Get hash container
   var hashtagList = document.getElementById('hashtagList');
+  // Error container
+  var errorContainer = document.getElementById('error');
+  // Filter Container
+  var filterContainer = document.getElementById('filterSelection');
   // Check if socket is available
   if (document.getElementById('socketScript')) {
     var socket = io();
@@ -51,11 +55,6 @@
         }
       }
     });
-    socket.on('error_handle', function () {
-      document.getElementById('error').style.display = 'block';
-      countryContainer.style.display = 'none';
-      document.getElementById('filterSelection').style.display = 'none';
-    });
     // Update country top 5 hashtags when click on country
     countryContainer.addEventListener('click', function (event) {
       topHashCounter(socket, event.target.id);
@@ -67,6 +66,14 @@
         topHashCounter(socket, gethashID);
       }
     }, 500);
+    // Handle errors in when something went wrong with the Twitter streaming API
+    socket.on('error_handle', function () {
+      // Show error container
+      errorContainer.style.display = 'block';
+      // Hide count containers
+      countryContainer.style.display = 'none';
+      filterContainer.style.display = 'none';
+    });
   }
   // Hash counter for top 5 hashtags blockID = the id of the country block
   function topHashCounter(socket, blockID) {
@@ -77,11 +84,11 @@
       // Fill in the selected country name
       document.getElementById('topHashTitle').innerHTML = countryName;
       // Empty container
-      //hashtagList.innerHTML = '';
       // Make list item for each hashtag [0] = hashtag name, [1] = total counts of the hashtag
       var getTagElements = document.getElementsByClassName("tag");
       // Check if their are hashtags saved
       if(topHashtags){
+        // Fill in the top Hash counters
         for (var i = 0; i < topHashtags.length; i++) {
           getTagElements[i].innerHTML = '<span>#' + topHashtags[i][0] + '</span> <span class="counterTag">' + topHashtags[i][1] + '</span>';
         }
