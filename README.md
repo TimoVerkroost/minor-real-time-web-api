@@ -6,7 +6,7 @@ Tweet counter app: [Live demo](https://twitter-locations.herokuapp.com/)
 
 ![Counter screenshot](https://github.com/TimoVerkroost/minor-real-time-web-api/blob/master/repo-images/screenshot_demo.png "Counter screenshot")
 
-## Usedunuseds
+## Used packages
 * [x] [`Socket.io`](https://www.npmjs.com/package/socket.io) for real-time updates.
 * [x] [`Express`](https://github.com/expressjs/express) server.
 * [x] [`Handlebars`](https://github.com/pillarjs/hbs) templating.
